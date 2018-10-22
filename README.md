@@ -1,2 +1,2 @@
 # mate
-MITRE ATT&amp;CK [char]8482 Technique Emulation 
+MITRE ATT&amp;CK &reg; Technique Emulation 
