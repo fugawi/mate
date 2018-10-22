@@ -13,7 +13,10 @@ Optional Dependencies: Atomic Red Team yaml files https://github.com/redcanaryco
 
 # Information
 Menu driven Powershell application
+
 TestDir - Local directory containing tests (starting directory will be recursed)
+
 OutDir - Local output directory for capturing test evidence (command ran along with PID)
+
 *File will be created for each different command (Ex. sc.exe --> sc.txt)
 
