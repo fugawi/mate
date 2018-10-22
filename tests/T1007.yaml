@@ -1,0 +1,23 @@
+---
+attack_technique: T1007
+display_name: System Service Discovery
+tactic: Discovery
+description: Adversaries may try to get information about registered services. Commands that may obtain information about services using operating system utilities are "sc," "tasklist /svc" using Tasklist, and "net start" using Net.
+
+atomic_tests:
+- name: Enumerate system services
+  description: |
+    Identify system services cmd
+
+  supported_platforms:
+    - windows
+
+  executor_cmd:
+    name: command_prompt
+    command: |
+      tasklist.exe /v
+      sc query
+      sc query state= all
+      sc start bthserv
+      sc stop bthserv
+      wmic service where displayname="Carbon Black Sensor" get name
