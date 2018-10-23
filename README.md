@@ -22,15 +22,15 @@ for the Windows platform some modificaitons have been made. Each yaml can contai
 Below is an example of T1007 and explanations of the different sections:  
 
 ---
-attack_technique: T1007 <-- No change from Atomics  
-display_name: System Service Discovery <-- No change from Atomics  
-tactic: Discovery <-- Added  
-description: Adversaries may try to get information about registered services. Commands that may obtain information about services using operating system utilities are "sc," "tasklist /svc" using Tasklist, and "net start" using Net. <-- Added  
+attack_technique: T1007 **<-- No change from Atomics**  
+display_name: System Service Discovery **<-- No change from Atomics**  
+tactic: Discovery **<-- Added**  
+description: Adversaries may try to get information about registered services. Commands that may obtain information about services using operating system utilities are "sc," "tasklist /svc" using Tasklist, and "net start" using Net.**<-- Added**  
 
 atomic_tests:  
 - name: Enumerate system services **<-- Some techniques updated with information**  
   description: |  
-    Identify system services cmd <-- Some techniques updated with information**  
+    Identify system services cmd **<-- Some techniques updated with information**  
     
   supported_platforms: **<-- Consolidated supported platforms**  
     - windows  
