@@ -1,5 +1,6 @@
 # MATE
-MITRE ATT&amp;CK&reg; Technique Emulation - Version: 1.0 
+MITRE ATT&amp;CK&reg; Technique Emulation - Version: 1.0  
+Developed By @Fugawi72 
 
 MATE will iterate over modified Atomic Red Team yaml files and create objects for each test. 
 The objects will allow for automating execution of MITRE ATT&CK&reg; techniques to test defenses.
@@ -15,6 +16,10 @@ Menu driven PowerShell application
 TestDir - Local directory containing tests (starting directory will be recursed)  **Only .yml or .yaml files will be loaded**  
 OutDir - Local output directory for capturing test evidence (command ran along with PID)  
 *File will be created for each different command (Ex. sc.exe --> sc.txt)
+
+Thanks to Casey Smith (@subTee) for his initial work on 'Invoke-Atomic' which led to the creation of MATE. A shoutout to the team at Red Canary (@redcanaryco) for great work on 'Atomic Red Team'.  
+Atomic Red Team is a library of tests based on the MITRE ATT&CK&reg; techniques that model adversary behavior, and are used by MATE to populate techniques for testing. To the team at MITRE  
+keep up the great work!              
 
 # Yaml configuration
 For the most part the yaml files are very similar to Atomic Red Team's. However, in order to provide automated execution
