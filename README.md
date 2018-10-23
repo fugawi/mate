@@ -11,14 +11,14 @@ Required Dependencies: powershell-yaml, Install-Module powershell-yaml https://g
 Optional Dependencies: Atomic Red Team yaml files https://github.com/redcanaryco/atomic-red-team/tree/master/atomics
 *Atomic files have been modified (CMD, PowerShell, Nix, Manual). Currently automated test limited to Windows only.
 
-Menu driven Powershell application  
+Menu driven PowerShell application  
 TestDir - Local directory containing tests (starting directory will be recursed)  
 OutDir - Local output directory for capturing test evidence (command ran along with PID)  
 *File will be created for each different command (Ex. sc.exe --> sc.txt)
 
 # Yaml configuration
-For the most part the yaml files are very similiar to Atomic Red Team's. However, in order to provide automated execution
-for the Windows platform some modificaitons have been made. Each yaml can contain numerous different executor commands.  
+For the most part the yaml files are very similar to Atomic Red Team's. However, in order to provide automated execution
+for the Windows platform some modifications have been made. Each yaml can contain numerous different executor commands.  
 Below is an example of T1007 and explanations of the different sections:  
 
 ---
