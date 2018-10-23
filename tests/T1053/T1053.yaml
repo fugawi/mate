@@ -1,0 +1,21 @@
+---
+attack_technique: T1053
+display_name: Scheduled Task
+tactic: Execution, Persistence, Privilege Escalation
+description: Utilities such as at and schtasks, along with the Windows Task Scheduler, can be used to schedule programs or scripts to be executed at a date and time. A task can also be scheduled on a remote system, provided the proper authentication is met to use RPC and file and printer sharing is turned on. Scheduling a task on a remote system typically required being a member of the Administrators group on the the remote system.
+
+atomic_tests:
+- name: Scheduled tasks
+  description: |
+    Scheduled task Local
+    Scheduled task Remote
+
+  supported_platforms:
+    - windows
+
+  executor_cmd:
+    name: command_prompt
+    command: |
+      at #{13:20 /interactive cmd}
+      SCHTASKS /Create /SC ONCE /TN spawn /TR #{task_command} /ST #{time}
+      SCHTASKS /Create /S #{target} /RU #{user_name} /RP #{password} /TN "Atomic task" /TR "#{task_command}" /SC daily /ST #{time}

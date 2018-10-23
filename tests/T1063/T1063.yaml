@@ -1,0 +1,41 @@
+---
+attack_technique: T1063
+display_name: Security Software Discovery
+tactic: Discovery
+description: Adversaries may attempt to get a listing of security software, configurations, defensive tools, and sensors that are installed on the system. This may include things such as local firewall rules, anti-virus, and virtualization. These checks may be built into early-stage remote access tools.
+
+atomic_tests:
+- name: Enumerate security software
+  description: |
+    Methods to identify Security Software on an endpoint
+    Discovery of an installed Sysinternals Sysmon service using driver altitude (even if the name is changed)
+    Security Software Discovery - powershell
+    Security Software Discovery - ps
+
+  supported_platforms:
+    - windows
+    - linux
+    - macos
+
+  executor_cmd:
+    name: command_prompt
+    command: |
+      netsh.exe advfirewall firewall show all profiles
+      tasklist.exe
+      tasklist.exe | findstr /i virus
+      tasklist.exe | findstr /i cb
+      tasklist.exe | findstr /i defender
+      fltmc.exe | findstr.exe 385201
+
+  executor_pwr:
+    name: powershell
+    command: |
+      get-process | ?{$_.Description -like "*virus*"}
+      get-process | ?{$_.Description -like "*carbonblack*"}
+      get-process | ?{$_.Description -like "*defender*"}
+      
+  executor_nix:
+    name: sh
+    command: |
+      ps -ef | grep Little\ Snitch | grep -v grep
+      ps aux | grep CbOsxSensorService      

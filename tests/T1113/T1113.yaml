@@ -1,0 +1,32 @@
+---
+attack_technique: T1113
+display_name: Screen Capture
+tactic: Collection
+description: Adversaries may attempt to get a listing of local system or domain accounts. Windows commands that can acquire this information are net user, net group <groupname>, and net localgroup <groupname> using the Net utility or through use of dsquery.
+
+atomic_tests:
+- name: Screencapture
+  description: |
+    Use screencapture command to collect a full desktop screenshot
+    Use xwd command to collect a full desktop screenshot and review file with xwud
+    Use import command to collect a full desktop screenshot
+ 
+  supported_platforms:
+    - macos
+    - linux
+ 
+  input_arguments:
+    output_file:
+      description: |
+        xxx
+      type: Path
+      default: desktop.png
+ 
+  executor_nix:
+    name: bash
+    command: |
+      screencapture #{output_file}
+      screencapture -x #{output_file}
+      xwd -root -out #{output_file}
+      xwud -in #{output_file}
+      import -window root #{output_file}

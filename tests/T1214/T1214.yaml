@@ -1,0 +1,19 @@
+---
+attack_technique: T1214
+display_name: Credentials in Registry
+tactic: Discovery
+description: The Windows Registry stores configuration information that can be used by the system or other programs. Adversaries may query the Registry looking for credentials and passwords that have been stored for use by other programs or services. Sometimes these credentials are used for automatic logons.
+
+atomic_tests:
+- name: Enumeration for Credentials in Registry
+  description: |
+    Queries to enumerate for credentials in the Registry.
+
+  supported_platforms:
+    - windows
+
+  executor_cmd:
+    name: command_prompt
+    command: |
+      reg query HKLM /f password /t REG_SZ /s
+      reg query HKCU /f password /t REG_SZ /s

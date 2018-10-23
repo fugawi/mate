@@ -1,0 +1,34 @@
+---
+attack_technique: T1135
+display_name: Network Share Discovery
+tactic: Discovery
+description: Networks often contain shared network drives and folders that enable users to access file directories on various systems across a network
+
+atomic_tests:
+- name: Network Share Discovery
+  description: |
+    Network Share Discovery
+    Network Share Discovery utilizing the command prompt
+    Network Share Discovery utilizing PowerShell
+
+  supported_platforms:
+    - macos
+    - linux
+    - windows
+
+  executor_nix:
+    name: sh
+    command: |
+      df -aH
+      smbutil view -g //#{computer_name}
+      showmount #{computer_name}
+
+  executor_cmd:
+    name: command_prompt
+    command: |
+      net view \\#{computer_name}
+
+  executor_pwr:
+    name: powershell
+    command: |
+      get-smbshare -Name #{computer_name}

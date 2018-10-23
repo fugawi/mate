@@ -1,0 +1,28 @@
+---
+attack_technique: T1148
+display_name: HISTCONTROL
+tactic: Defense Evasion
+description: The HISTCONTROL environment variable keeps track of what should be saved by the history command and eventually into the ~/.bash_history file when a user logs out. This setting can be configured to ignore commands that start with a space by simply setting it to "ignorespace". HISTCONTROL can also be set to ignore duplicate commands by setting it to "ignoredups". In some Linux systems, this is set by default to "ignoreboth" which covers both of the previous examples. 
+
+atomic_tests:
+- name: Disable history collection
+  description: |
+    Disables history collection in shells
+
+  supported_platforms:
+    - linux
+    - macos
+
+  executor_nix:
+    name: sh
+    command: |
+      export HISTCONTROL=ignoreboth
+      ls #{evil_command}
+
+  executor_man:
+    name: manual
+    steps: |
+      1. export HISTCONTROL=ignoreboth
+      2. echo export "HISTCONTROL=ignoreboth" >> ~/.bash_profile
+      3. ls
+      4. whoami > recon.txt

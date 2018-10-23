@@ -1,0 +1,24 @@
+---
+attack_technique: T1147
+display_name: Hidden Users
+tactic: Defense Evasion
+description: Every user account in macOS has a userID associated with it. When creating a user, you can specify the userID for that account. There is a property value in /Library/Preferences/com.apple.loginwindow called Hide500Users that prevents users with userIDs 500 and lower from appearing at the login screen.
+
+atomic_tests:
+- name: Hidden Users
+  description: |
+    Add a hidden user on MacOS
+
+  supported_platforms:
+    - macos
+
+  input_arguments:
+    user_name:
+      description: username to add
+      type: string
+      default: APT
+
+  executor_nix:
+    name: sh
+    command: |
+      sudo dscl . -create /Users/#{user_name} UniqueID 333

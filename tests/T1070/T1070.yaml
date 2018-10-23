@@ -1,0 +1,29 @@
+---
+attack_technique: T1070
+display_name: Indicator Removal on Host
+tactic: Defense Evasion
+description: Adversaries may delete or alter generated event files on a host system, including potentially captured files such as quarantined malware. This may compromise the integrity of the security solution, causing events to go unreported, or make forensic analysis and incident response more difficult due to lack of sufficient data to determine what occurred.
+
+atomic_tests:
+- name: Clear Logs
+  description: |
+    Clear Windows Event Logs
+    Manages the update sequence number (USN) change journal, which provides a persistent log of all changes made to files on the volume.
+    Delete system and audit logs
+  
+  supported_platforms:
+    - windows
+    - macos
+    - linux
+  
+  executor_cmd:
+    name: command_prompt
+    command: |
+      wevtutil cl #{log_name}
+      fsutil #{usn deletejournal /D C:}
+
+  executor_nix:
+    name: sh
+    command: |
+      rm -rf /private/var/log/system.log*
+      rm -rf /private/var/audit/*

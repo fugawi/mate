@@ -1,0 +1,25 @@
+---
+attack_technique: T1124
+display_name: System Time Discovery
+tactic: Discovery
+description: The system time is set and stored by the Windows Time Service within a domain to maintain time synchronization between systems and services in an enterprise network. An adversary may gather the system time and/or time zone from a local or remote system. This information may be gathered in a number of ways, such as with Net on Windows by performing net time \\hostname to gather the system time on a remote system. The victim's time zone may also be inferred from the current system time or gathered by using w32tm /tz.
+
+atomic_tests:
+- name: Enumerate system time
+  description: |
+    Identify the system time
+    Identify the system time via PowerShell
+
+  supported_platforms:
+    - windows
+
+  executor_cmd:
+    name: command_prompt
+    command: |
+      net time \\localhost
+      w32tm /tz
+
+  executor_pwr:
+    name: powershell
+    command: |
+      Get-Date

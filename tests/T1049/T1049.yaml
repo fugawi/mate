@@ -1,0 +1,35 @@
+---
+attack_technique: T1049
+display_name: System Network Connections Discovery
+tactic: Discovery
+description: Adversaries may attempt to get a listing of network connections to or from the compromised system they are currently accessing or from remote systems by querying for information over the network.
+
+atomic_tests:
+- name: Enumerate network connections
+  description: |
+    Get a listing of network connections
+    System Network Connections Discovery with PowerShell
+    System Network Connections Discovery Linux & MacOS
+
+  supported_platforms:
+    - windows
+    - linux
+    - macos
+    
+  executor_cmd:
+    name: command_prompt
+    command: |
+      netstat
+      net use
+      net sessions
+
+  executor_pwr:
+    name: powershell
+    command: |
+      Get-NetTCPConnection
+
+  executor_nix:
+    name: sh
+    command: |
+      netstat
+      who -a

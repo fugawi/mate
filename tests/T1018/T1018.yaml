@@ -1,0 +1,29 @@
+---
+attack_technique: T1018
+display_name: Remote System Discovery
+tactic: Discovery
+description: Adversaries will likely attempt to get a listing of other systems by IP address, hostname, or other logical identifier on a network that may be used for Lateral Movement from the current system. Functionality could exist within remote access tools to enable this, but utilities available on the operating system could also be used.
+
+atomic_tests:
+- name: Enumerate remote systems
+  description: |
+    Identify remote systems 
+
+  supported_platforms:
+    - windows
+    - linux
+    - macos
+
+  executor_cmd:
+    name: command_prompt
+    command: |
+      net view /domain
+      net view
+      for /l %i in (1,1,254) do ping -n 1 -w 100 192.168.1.%i
+      arp -a
+
+  executor_nix:
+    name: sh
+    command: |
+      arp -a | grep -v '^?'
+      for ip in $(seq 1 254); do ping -c 1 192.168.1.$ip -o; [ $? -eq 0 ] && echo "192.168.1.$ip UP" || : ; done

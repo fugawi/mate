@@ -1,0 +1,25 @@
+---
+attack_technique: T1144
+display_name: Gatekeeper Bypass
+tactic: Defense Evasion
+description: In macOS and OS X, when applications or programs are downloaded from the internet, there is a special attribute set on the file called com.apple.quarantine. This attribute is read by Apple's Gatekeeper defense program at execution time and provides a prompt to the user to allow or deny execution.
+
+atomic_tests:
+- name: Gatekeeper Bypass
+  description: |
+    Gatekeeper Bypass via command line
+
+  supported_platforms:
+    - macos
+
+  input_arguments:
+    app_path:
+      description: Path to app to be used
+      type: Path
+      default: myapp.app
+
+  executor_nix:
+    name: sh
+    command: |
+      sudo xattr -r -d com.apple.quarantine #{app_path}
+      sudo spctl --master-disable

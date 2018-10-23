@@ -1,0 +1,22 @@
+---
+attack_technique: T1027
+display_name: Obfuscated Files or Information
+tactic: Defense Evasion
+description: Adversaries may attempt to make an executable or file difficult to discover or analyze by encrypting, encoding, or otherwise obfuscating its contents on the system or in transit. This is common behavior that can be used across different platforms and the network to evade defenses.
+
+atomic_tests:
+- name: Obfuscate data 
+  description: |
+    Creates a base64-encoded data file and decodes it into an executable shell script
+
+  supported_platforms:
+    - macos
+    - linux
+
+  executor_nix:
+    name: sh
+    command: |
+      sh -c "echo ZWNobyBIZWxsbyBmcm9tIHRoZSBBdG9taWMgUmVkIFRlYW0= > /tmp/encoded.dat"
+      cat /tmp/encoded.dat | base64 -d > /tmp/art.sh
+      chmod +x /tmp/art.sh
+      /tmp/art.sh

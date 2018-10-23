@@ -1,0 +1,24 @@
+---
+attack_technique: T1009
+display_name: Binary Padding
+tactic: Defense Evasion
+description: Some security tools inspect files with static signatures to determine if they are known malicious. Adversaries may add data to files to increase the size beyond what security tools are capable of handling or to change the file hash to avoid hash-based blacklists.
+
+atomic_tests:
+- name: Pad Evil Binary to Change Hash
+  description: |
+    Copies cat to create an "evil binary" and pads it with a zero to change the hash without harming execution
+
+  supported_platforms:
+    - macos
+    - linux
+
+  executor_nix:
+    name: sh
+    command: |
+      cp /bin/cat /tmp/evilCat
+      md5sum /tmp/evilCat
+      dd if=/dev/zero bs=1 count=1 >> /tmp/evilCat
+      md5sum /tmp/evilCat
+      /tmp/evilCat .bash_profile
+      

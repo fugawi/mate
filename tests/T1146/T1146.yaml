@@ -1,0 +1,31 @@
+---
+attack_technique: T1146
+display_name: Clear Command History
+tactic: Defense Evasion
+description: macOS and Linux both keep track of the commands users type in their terminal so that users can easily remember what they've done. These logs can be accessed in a few different ways. While logged in, this command history is tracked in a file pointed to by the environment variable HISTFILE.
+
+atomic_tests:
+- name: Clear Bash history (rm)
+  description: |
+    Clears bash history via rm
+    Clears bash history vie echo
+    Clears bash history via cat /dev/null
+    Clears bash history via a symlink to /dev/null
+    Clears bash history via truncate
+    Clears the history of a bunch of different shell types by setting the history size to zero
+  
+  supported_platforms:
+    - linux
+    - macos
+  
+  executor_nix:
+    name: sh
+    command: |
+      rm ~/.bash_history
+      echo "" > ~/.bash_history
+      cat /dev/null > ~/.bash_history
+      ln -sf /dev/null ~/.bash_history
+      truncate -s0 ~/.bash_history
+      unset HISTFILE
+      export HISTFILESIZE=0
+      history -c

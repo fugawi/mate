@@ -1,0 +1,26 @@
+---
+attack_technique: T1156
+display_name: .bash_profile and .bashrc
+tactic: Persistence
+description: ~/.bash_profile and ~/.bashrc are executed in a user's context when a new shell opens or when a user logs in so that their environment is set correctly. ~/.bash_profile is executed for login shells and ~/.bashrc is executed for interactive non-login shells. This means that when a user logs in (via username and password) to the console (either locally or remotely via something like SSH), ~/.bash_profile is executed before the initial command prompt is returned to the user. 
+
+atomic_tests:
+- name: .bash_profile and .bashrc
+  description: |
+    xxx
+
+  supported_platforms:
+    - macos
+    - linux
+
+  input_arguments:
+    script:
+      description: path to script
+      type: path
+      default: /path/to/script.py
+
+  executor_nix:
+    name: sh
+    command: |
+      echo "#{script}" >> ~/.bash_profile
+      echo "#{script}" >> ~/.bashrc

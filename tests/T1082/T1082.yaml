@@ -1,0 +1,31 @@
+---
+attack_technique: T1082
+display_name: System Information Discovery
+tactic: Discovery
+description: An adversary may attempt to get detailed information about the operating system and hardware, including version, patches, hotfixes, service packs, and architecture.
+
+atomic_tests:
+- name: Enumerate system information
+  description: |
+    Identify System Info
+
+  supported_platforms:
+    - windows
+    - linux
+    - macos
+
+  executor_cmd:
+    name: command_prompt
+    command: |
+      systeminfo /S localhost /FO LIST
+      reg query HKLM\SYSTEM\CurrentControlSet\Services\Disk\Enum
+
+  executor_nix:
+    name: sh
+    command: |
+      systemsetup
+      system_profiler
+      uname -a >> /tmp/loot.txt
+      cat /etc/lsb-release >> /tmp/loot.txt
+      cat /etc/redhat-release >> /tmp/loot.txt
+      uptime >> /tmp/loot.txt

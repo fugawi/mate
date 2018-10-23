@@ -1,0 +1,24 @@
+---
+attack_technique: T1030
+display_name: Data Transfer Size Limits
+tactic: Exfiltration
+description: An adversary may exfiltrate data in fixed size chunks instead of whole files or limit packet sizes below certain thresholds. This approach may be used to avoid triggering network data transfer threshold alerts.
+
+atomic_tests:
+- name: Data transfer size set to 5Mb
+  description: |
+    Take a file/directory, split it into 5Mb chunks
+
+  supported_platforms:
+    - macos
+    - centos
+    - ubuntu
+    - linux
+
+  executor_nix:
+    name: sh
+    command: |
+      cd /tmp/
+      dd if=/dev/urandom of=/tmp/victim-whole-file bs=25M count=1
+      split -b 5000000 /tmp/victim-whole-file
+      ls -l

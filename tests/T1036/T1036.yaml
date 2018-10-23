@@ -1,0 +1,27 @@
+---
+attack_technique: T1036
+display_name: Masquerading
+tactic: Defense Evasion
+description: Masquerading occurs when the name or location of an executable, legitimate or malicious, is manipulated or abused for the sake of evading defenses and observation. Several different variations of this technique have been observed.
+
+atomic_tests:
+- name: Masquerading as process
+  description: |
+    Copies cmd.exe, renames it, and launches it to masquerade as an instance of lsass.exe.
+    Copies sh process, renames it as crond, and executes it to masquerade as the cron daemon.
+
+  supported_platforms:
+    - windows
+    - linux
+
+  executor_cmd:
+    name: command_prompt
+    command: |
+      cmd.exe /c copy %SystemRoot%\System32\cmd.exe %SystemRoot%\Temp\lsass.exe
+      cmd.exe /c %SystemRoot%\Temp\lsass.exe
+
+  executor_nix:
+    name: sh
+    command: |
+      cp /bin/sh /tmp/crond
+      /tmp/crond

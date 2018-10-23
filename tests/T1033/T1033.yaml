@@ -1,0 +1,34 @@
+---
+attack_technique: T1033
+display_name: System Owner/User Discovery
+tactic: Discovery
+description: Adversaries may attempt to identify the primary user, currently logged in user, set of users that commonly uses a system, or whether a user is actively using the system. They may do this, for example, by retrieving account usernames or by using Credential Dumping. The information may be collected in a number of different ways using other Discovery techniques, because user and username details are prevalent throughout a system and include running process ownership, file/directory ownership, session information, and system logs.
+
+atomic_tests:
+- name: Enumerate system owner/user
+  description: |
+    Identify System owner or users on an endpoint
+
+  supported_platforms:
+    - windows
+    - linux
+    - macos
+
+  executor_cmd:
+    name: command_prompt
+    command: |
+      cmd.exe /C whoami
+      wmic useraccount get #{/ALL}
+      quser /SERVER:"#{computer_name}"
+      quser
+      qwinsta.exe" /server:#{computer_name}
+      qwinsta.exe
+      for #{/F "tokens=1,2" %i in ('qwinsta /server:#{computer_name} ^| findstr "Active Disc"') do @echo %i | find /v "#" | find /v "console" || echo %j > usernames.txt}
+      @FOR #{/F %n in (computers.txt) DO @FOR /F "tokens=1,2" %i in ('qwinsta /server:%n ^| findstr "Active Disc"') do @echo %i | find /v "#" | find /v "console" || echo %j > usernames.txt}
+
+  executor_nix:
+    name: sh
+    command: |
+      users
+      w
+      who

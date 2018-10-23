@@ -1,0 +1,30 @@
+---
+attack_technique: T1142
+display_name: Keychain
+tactic: Credential Access
+description: Keychains are the built-in way for macOS to keep track of users' passwords and credentials for many services and features such as WiFi passwords, websites, secure notes, certificates, and Kerberos. Keychain files are located in ~/Library/Keychains/,/Library/Keychains/, and /Network/Library/Keychains/. The security command-line utility, which is built into macOS by default, provides a useful way to manage these credentials.
+
+atomic_tests:
+- name: Keychain
+  description: |
+    ### Keychain Files
+
+      ~/Library/Keychains/
+
+      /Library/Keychains/
+
+      /Network/Library/Keychains/
+
+      [Security Reference](https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/man1/security.1.html)
+
+      [Keychain dumper](https://github.com/juuso/keychaindump)
+
+  supported_platforms:
+    - macos
+
+  executor_nix:
+    name: sh
+    command: |
+      security -h
+      security find-certificate -a -p > allcerts.pem
+      security import /tmp/certs.pem -k

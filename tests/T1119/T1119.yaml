@@ -1,0 +1,24 @@
+---
+attack_technique: T1119
+display_name: Automated Collection
+tactic: Collection
+description: Once established within a system or network, an adversary may use automated techniques for collecting internal data. Methods for performing this technique could include use of Scripting to search for and copy information fitting set criteria such as file type, location, or name at specific time intervals. This functionality could also be built into remote access tools
+
+atomic_tests:
+- name: Automated Collection Command Prompt
+  description: |
+    Automated Collection
+
+  supported_platforms:
+    - windows
+
+  executor_cmd:
+    name: command_prompt
+    command: |
+      dir c: /b /s .docx | findstr /e .docx
+      for /R c: %f in (*.docx) do copy %f c:\temp\
+
+  executor_pwr:
+    name: powershell
+    command: |
+      Get-ChildItem -Recurse -Include *.doc | % {Copy-Item $_.FullName -destination c:\temp}

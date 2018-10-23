@@ -1,0 +1,26 @@
+---
+attack_technique: T1047
+display_name: Windows Management Instrumentation
+tactic: Execution
+description: Windows Management Instrumentation (WMI) is a Windows administration feature that provides a uniform environment for local and remote access to Windows system components. It relies on the WMI service for local and remote access and the server message block (SMB) and Remote Procedure Call Service (RPCS) for remote access.  
+
+atomic_tests:
+- name: WMI recon users, processes, software
+  
+  description: |
+    WMI List User Accounts
+    WMI Reconnaissance Processes
+    WMI Reconnaissance Updates
+    WMI Reconnaissance List Remote Services
+  
+  supported_platforms:
+    - windows
+  
+  executor_cmd:
+    name: command_prompt
+    command: |
+      wmic #{useraccount get /ALL}
+      wmic process get caption,executablepath,commandline
+      wmic qfe get description,installedOn /format:csv
+      wmic service where (caption like "%bit9%")
+  

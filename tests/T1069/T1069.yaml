@@ -1,0 +1,36 @@
+---
+attack_technique: T1069
+display_name: Permission Groups Discovery
+tactic: Discovery
+description: Adversaries may attempt to find local system or domain-level groups and permissions settings.
+
+atomic_tests:
+- name: Enumerate group permissions
+  description: |
+    Permission Groups Discovery
+    Permission Groups Discovery for Windows
+    Permission Groups Discovery utilizing PowerShell
+
+  supported_platforms:
+    - macos
+    - linux
+    - windows
+
+  executor_nix:
+    name: sh
+    command: |
+      dscacheutil -q group
+      dscl . -list /Groups
+      groups
+
+  executor_cmd:
+    name: command_prompt
+    command: |
+      net localgroup
+      net group /domain
+
+  executor_pwr:
+    name: powershell
+    command: |
+      get-localgroup
+      get-ADPrinicipalGroupMembership #{user} | select name

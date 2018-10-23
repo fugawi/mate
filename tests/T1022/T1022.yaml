@@ -1,0 +1,28 @@
+---
+attack_technique: T1022
+display_name: Data Encrypted
+tactic: Exfiltration
+description: Data is encrypted before being exfiltrated in order to hide the information that is being exfiltrated from detection or to make the exfiltration less conspicuous upon inspection by a defender. The encryption is performed by a utility, programming library, or custom algorithm on the data itself and is considered separate from any encryption performed by the command and control or file transfer protocol. Common file archive formats that can encrypt files are RAR and zip.
+
+atomic_tests:
+- name: Data Encryption
+  description: |
+    Encrypt data
+
+  supported_platforms:
+    - macos
+    - centos
+    - ubuntu
+    - linux
+
+  executor_nix:
+    name: sh
+    command: |
+      echo "This file will be encrypted" > /tmp/victim-gpg.txt
+      mkdir /tmp/victim-files
+      cd /tmp/victim-files
+      touch a b c d e f g
+      zip --password "insert password here" /tmp/victim-files.zip /tmp/victim-files/*
+      gpg -c /tmp/victim-gpg.txt
+      <enter passphrase and confirm>
+      ls -l
