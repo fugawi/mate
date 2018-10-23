@@ -12,7 +12,7 @@ Optional Dependencies: Atomic Red Team yaml files https://github.com/redcanaryco
 **Atomic files have been modified (CMD, PowerShell, Nix, Manual). Currently automated test limited to Windows only.**
 
 Menu driven PowerShell application  
-TestDir - Local directory containing tests (starting directory will be recursed)  
+TestDir - Local directory containing tests (starting directory will be recursed)  **Only .yml or .yaml files will be loaded**  
 OutDir - Local output directory for capturing test evidence (command ran along with PID)  
 *File will be created for each different command (Ex. sc.exe --> sc.txt)
 
