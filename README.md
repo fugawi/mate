@@ -17,9 +17,9 @@ TestDir - Local directory containing tests (starting directory will be recursed)
 OutDir - Local output directory for capturing test evidence (command ran along with PID)  
 *File will be created for each different command (Ex. sc.exe --> sc.txt)
 
-Thanks to Casey Smith (@subTee) for his initial work on 'Invoke-Atomic' which led to the creation of MATE. A shoutout to the team at Red Canary (@redcanaryco) for great work on 'Atomic Red Team'.  
-Atomic Red Team is a library of tests based on the MITRE ATT&CK&reg; techniques that model adversary behavior, and are used by MATE to populate techniques for testing. To the team at MITRE  
-keep up the great work!              
+**Thanks to Casey Smith (@subTee) for his initial work on 'Invoke-Atomic' which led to the creation of MATE. A shoutout to the team at Red Canary (@redcanaryco) for great work on 'Atomic Red Team'. To the team at MITRE keep up the great work!**              
+
+Atomic Red Team is a library of tests based on the MITRE ATT&CK&reg; techniques that model adversary behavior, and are used by MATE to populate techniques for testing. 
 
 # Yaml configuration
 For the most part the yaml files are very similar to Atomic Red Team's. However, in order to provide automated execution
