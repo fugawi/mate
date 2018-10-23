@@ -18,7 +18,8 @@ OutDir - Local output directory for capturing test evidence (command ran along w
 
 # Yaml configuration
 For the most part the yaml files are very similiar to Atomic Red Team's. However, in order to provide automated execution
-for the Windows platform some modificaitons have been made. Below is an example of T1007 and explanations of the different sections.  
+for the Windows platform some modificaitons have been made. Each yaml can contain numerous different executor commands.  
+Below is an example of T1007 and explanations of the different sections:  
 
 ---
 attack_technique: T1007 <-- No change from Atomics  
@@ -34,7 +35,8 @@ atomic_tests:
   supported_platforms: **<-- Consolidated supported platforms**  
     - windows  
 
-  executor_cmd: **<-- Created numerous executor branches; executor_cmd (cmd), executor_pwr (PowerShell), executor_nix (Linux/Unix/MacOS), executor_man (manual testing)**    
+  executor_cmd: **<-- Created numerous executor branches**  
+  **executor_cmd (cmd), executor_pwr (PowerShell), executor_nix (Linux/Unix/MacOS), executor_man (manual testing)**  
   ***This was required in order to breakout individual testing commands for automation**  
     name: command_prompt  
     command: |  
