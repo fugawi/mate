@@ -10,7 +10,9 @@ License: https://opensource.org/licenses/BSD-3-Clause
 Required Dependencies: powershell-yaml, Install-Module powershell-yaml https://github.com/cloudbase/powershell-yaml
 
 Optional Dependencies: Atomic Red Team yaml files https://github.com/redcanaryco/atomic-red-team/tree/master/atomics
-**Atomic files have been modified (CMD, PowerShell, Nix, Manual). Currently automated test limited to Windows only.**
+**Atomic files have been modified (CMD, PowerShell, Nix, Manual). Currently automated test limited to Windows only cmd only. PowerShell is currently commented out. Can be uncommented and should work for the most part**
+
+**PLEASE TEST WITH CARE!**
 
 Menu driven PowerShell application  
 TestDir - Local directory containing tests (starting directory will be recursed)  **Only .yml or .yaml files will be loaded**  
