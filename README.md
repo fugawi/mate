@@ -27,15 +27,15 @@ tactic: Discovery <-- Added
 description: Adversaries may try to get information about registered services. Commands that may obtain information about services using operating system utilities are "sc," "tasklist /svc" using Tasklist, and "net start" using Net. <-- Added  
 
 atomic_tests:  
-- name: Enumerate system services <-- Some techniques updated with information  
+- name: Enumerate system services **<-- Some techniques updated with information**  
   description: |  
-    Identify system services cmd <-- Some techniques updated with information  
-
-  supported_platforms: <-- Consolidated supported platforms  
+    Identify system services cmd <-- Some techniques updated with information**  
+    
+  supported_platforms: **<-- Consolidated supported platforms**  
     - windows  
 
-  executor_cmd: <-- Created numerous executor branches; executor_cmd (cmd), executor_pwr (PowerShell), executor_nix (Linux/Unix/MacOS), executor_man (manual testing)    
-  *This was required in order to breakout individual testing commands for automation  
+  executor_cmd: **<-- Created numerous executor branches; executor_cmd (cmd), executor_pwr (PowerShell), executor_nix (Linux/Unix/MacOS), executor_man (manual testing)**    
+  ***This was required in order to breakout individual testing commands for automation**  
     name: command_prompt  
     command: |  
       tasklist.exe /v  
