@@ -19,7 +19,7 @@ OutDir - Local output directory for capturing test evidence (command ran along w
 # Yaml configuration
 For the most part the yaml files are very similar to Atomic Red Team's. However, in order to provide automated execution
 for the Windows platform some modifications have been made. Each yaml can contain numerous different executor commands.  
-Below is an example of T1007 and explanations of the different sections:  
+Below is an example of T1007 and explanation of the different sections:  
 
 ---
 attack_technique: T1007 **<-- No change from Atomics**  
