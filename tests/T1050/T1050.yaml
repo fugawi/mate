@@ -1,0 +1,40 @@
+---
+attack_technique: T1050
+display_name: Service Installation
+tactic: Persistence, Privilege Escalation
+description: When operating systems boot up, they can start programs or applications called services that perform background system functions. Adversaries may install a new service that can be configured to execute at startup by using utilities to interact with services or by directly modifying the Registry. The service name may be disguised by using a name from a related operating system or benign software with Masquerading. Services may be created with administrator privileges but are executed under SYSTEM privileges, so an adversary may also use a service to escalate privileges from administrator to SYSTEM. Adversaries may also directly start services through Service Execution. **Requires Admin**
+
+atomic_tests:
+- name: Service Installation
+  description: |
+    Installs A Local Service
+    Installs A Local Service via PowerShell
+
+  supported_platforms:
+    - windows
+
+  input_arguments:
+    binary_path:
+      description: Name of the service binary, include path.
+      type: Path
+      default: <user dir>\mate\tests\T1050\bin\AtomicService.exe
+    service_name:
+      description: Name of the Service
+      type: String
+      default: AtomicTestService
+
+  executor_cmd:
+    name: command_prompt
+    command: |
+      sc.exe create AtomicService binPath= "<user dir>\mate\tests\T1050\bin\AtomicService.exe"
+      sc.exe start AtomicService
+      sc.exe stop AtomicService
+      sc.exe delete AtomicService
+
+  executor_pwr:
+    name: powershell
+    command: |
+      New-Service -Name AtomicService -BinaryPathName "<user dir>\mate\tests\T1050\bin\AtomicService.exe"
+      Start-Service -Name AtomicService
+      Stop-Service -Name AtomicService
+      (Get-WmiObject Win32_Service -filter "name='AtomicService'").Delete()
