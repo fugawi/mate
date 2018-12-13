@@ -1,5 +1,5 @@
 # MATE
-MITRE ATT&amp;CK&reg; Technique Emulation - Version: 1.0  
+MITRE ATT&amp;CK&reg; Technique Emulation  
 Developed By @Fugawi72 
 
 MATE will iterate over modified Atomic Red Team yaml files and create objects for each test. 
