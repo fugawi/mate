@@ -1,0 +1,34 @@
+---
+attack_technique: T1060
+display_name: Registry Run Keys and Start Folder
+tactic: Persistence
+description: Adding an entry to "run keys" in the Registry or startup folder will cause the program referenced to be executed when a user logs in. These programs will be executed under the context of the user and will have the account's associated permissions level. **Requires admin**
+
+atomic_tests:
+- name: Reg Key Run
+  description: |
+    Run/RunOnce Key Persistence
+    
+  supported_platforms:
+    - windows
+
+  input_arguments:
+    command_to_execute:
+      description: Thing to Run
+      type: Path
+      default: <user dir>\HelloWorld.bat
+
+  executor_cmd:
+    name: command_prompt
+    command: |
+      REG ADD "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /V "Atomic Red Team" /t REG_SZ /F /D "<user dir>\mate\tests\t1060\HelloWorld.bat"
+      REG DELETE "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /V "Atomic Red Team" /f
+      REG ADD "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnceEx\0001\Depend" /V 1 /d "<user dir>\mate\tests\t1060\HelloWorld.bat" /f
+      REG DELETE "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnceEx\0001\Depend" /V 1 /f
+
+  executor_pwr:
+    name: powershell
+    command: |
+      Set-ItemProperty "HKLM:\Software\Microsoft\Windows\CurrentVersion\RunOnce" -Name "NextRun" -Value "<user dir>\mate\tests\t1060\HelloWorld.bat" -Force
+      Remove-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\RunOnce" -Name "NextRun" -Force
+      "<user dir>\mate\tests\t1060\t1060.ps1"
