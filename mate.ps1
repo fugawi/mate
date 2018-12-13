@@ -3,13 +3,15 @@
 MATE will iterate over Atomic Red Team yaml files and create objects for each test. 
 The objects will allow for automating execution of MITRE ATT&CK Techniques to test defenses.
 
+
 Author: Steve Motts @Fugawi72
 Special Thanks: Casey Smith @subTee & Red Canary @redcanaryco
 
 License: https://opensource.org/licenses/BSD-3-Clause
 Required Dependencies: powershell-yaml , Install-Module powershell-yaml #https://github.com/cloudbase/powershell-yaml
 Optional Dependencies: Atomic Red Team yaml files
-Version: 1.0
+
+Version: 1.1 - Release Date 12/13/2018 (see Wiki for updates)
 
 .DESCRIPTION
 Create Atomic Tests from yaml files described in Atomic Red Team.
@@ -172,15 +174,15 @@ function Invoke-Atests($values) {
 						Write-Host "Invoking Test --> " $atest -Foreground Green
 						$command,$argument = $atest.split(" ",2)
 						$ProcessDate = Get-Date -Format g
-						if (-Not (Test-Path "$OutputFP\$command.txt")) {
-							$NewFile = New-Item -Path "$OutputFP" -Name "$command.txt" -ItemType "File" -Force
+						if (-Not (Test-Path "$OutputFP\commandline.txt")) {
+							$NewFile = New-Item -Path "$OutputFP" -Name "commandline.txt" -ItemType "File" -Force
 						}
-						Write-Output "Date --> $ProcessDate" | Out-File -Append "$OutputFP\$command.txt" 
-						Write-Output "Command --> $command $argument" | Out-File -Append "$OutputFP\$command.txt"
+						Write-Output "Date --> $ProcessDate" | Out-File -Append "$OutputFP\commandline.txt" 
+						Write-Output "Command --> $command $argument" | Out-File -Append "$OutputFP\commandline.txt"
 						$ProcessOutput = start-process $command -ArgumentList $argument -PassThru -WindowStyle Normal -Wait
 						$ProcID = $ProcessOutput.iD
-						Write-Output "PID --> $ProcID" | Out-File -Append "$OutputFP\$command.txt"
-						Write-Host "Information captured --> $OutputFP\$command.txt`n" -ForegroundColor Green
+						Write-Output "PID --> $ProcID" | Out-File -Append "$OutputFP\commandline.txt"
+						Write-Host "Information captured --> $OutputFP\commandline.txt`n" -ForegroundColor Green
 					}
 				}
 			}
@@ -190,18 +192,18 @@ function Invoke-Atests($values) {
 			if ($AtomicTests.$technum.atomic_tests.executor_pwr.name.Contains('powershell')) {
 				foreach ($atest in $AtomicTests.$technum.atomic_tests.executor_pwr.command -split "\n") {
 					if (-Not ([string]::IsNullOrEmpty($atest))) {
-						Write-Host "Invoking Test --> " $atest -Foreground Green
+					    Write-Host "Invoking Test --> " $atest -Foreground Green
 						$command,$argument = $atest.split(" ",2)
 						$ProcessDate = Get-Date -Format g
-						#if (-Not (Test-Path "$OutputFP\$command.txt")) {
-						#	$NewFile = New-Item -Path "$OutputFP" -Name "$command.txt" -ItemType "File" -Force
-						#}
-						#Write-Output "Date --> $ProcessDate" | Out-File -Append "$OutputFP\$command.txt" 
-						#Write-Output "Command --> $command $argument" | Out-File -Append "$OutputFP\$command.txt"
-						#$ProcessOutput = start-process powershell.exe -ArgumentList $atest -PassThru -WindowStyle Hidden -Wait
-						#$ProcID = $ProcessOutput.iD
-						#Write-Output "PID --> $ProcID" | Out-File -Append "$OutputFP\$command.txt"
-						#Write-Host "`nInformation captured --> $OutputFP\$command.txt" -ForegroundColor Green
+						if (-Not (Test-Path "$OutputFP\powershell.txt")) {
+						    $NewFile = New-Item -Path "$OutputFP" -Name "powershell.txt" -ItemType "File" -Force
+						}
+						Write-Output "Date --> $ProcessDate" | Out-File -Append "$OutputFP\powershell.txt" 
+						Write-Output "Command --> $command $argument" | Out-File -Append "$OutputFP\powershell.txt"
+						$ProcessOutput = start-process powershell.exe -ArgumentList $atest -PassThru -WindowStyle Hidden -Wait
+						$ProcID = $ProcessOutput.iD
+						Write-Output "PID --> $ProcID" | Out-File -Append "$OutputFP\powershell.txt"
+						Write-Host "`nInformation captured --> $OutputFP\powershell.txt" -ForegroundColor Green
 					}
 				}
 			}
@@ -224,7 +226,7 @@ Write-Host '
   /_/  /_/   /_/  |_|/_/     /_____/   
 ' -ForegroundColor Yellow
 Write-Host "##########################################################################################################" -ForegroundColor Green
-Write-Host "##   MITRE ATT&CK"([char]8482)"Technique Emulation (MATE) - v1.0		                                   	##" -ForegroundColor Green
+Write-Host "##   MITRE ATT&CK"([char]8482)"Technique Emulation (MATE) - v1.1		                                   	##" -ForegroundColor Green
 Write-Host "##   Developed By @Fugawi72                                                                             ##" -ForegroundColor Green
 Write-Host "##                                                                                                      ##" -ForegroundColor Green
 Write-Host "##   Thanks to Casey Smith (@subTee) for his initial work on 'Invoke-Atomic' which led to the creation  ##" -ForegroundColor Green
