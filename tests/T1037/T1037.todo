@@ -1,0 +1,47 @@
+---
+attack_technique: T1037
+display_name: Logon Scripts
+tactic: Lateral Movement, Persistence
+description: Windows logon scripts can be run whenever a specific user or group of users log into a system. The scripts can be used to perform administrative functions, which may often execute other programs or send information to an internal logging server. If adversaries can access these scripts, they may insert additional code into the logon script to execute their tools when a user logs in.
+
+atomic_tests:
+- name: Logon Scripts
+  description: |
+    Added Via Reg.exe
+
+  supported_platforms:
+    - windows
+    - macos
+
+  input_arguments:
+    script_command:
+      description: Command To Execute
+      type: String
+      default: cmd.exe /c calc.exe
+
+  executor_cmd:
+    name: command_prompt
+    command: |
+      REG.exe ADD HKCU\Environment /v UserInitMprLogonScript /t REG_MULTI_SZ /d "cmd.exe /c calc" /f
+      REG.exe DELETE HKCU\Environment /v UserInitMprLogonScript /f
+
+  executor_pwr:
+    name: powershell
+    command: |
+      New-ItemProperty -Path "HKCU:\Environment" -Name UserInitMprLogonScript -Value 'cmd.exe' -PropertyType MultiString -Force
+      Remove-ItemProperty -Path "HKCU:\Environment" -Name UserInitMprLogonScript -Force 
+      
+  executor_nix:
+    name: manual
+    steps: |
+      1. Create the required plist file
+          sudo touch /private/var/root/Library/Preferences/com.apple.loginwindow.plist
+
+      2. Populate the plist with the location of your shell script
+          sudo defaults write com.apple.loginwindow LoginHook /Library/Scripts/AtomicRedTeam.sh
+
+      3. Create the required plist file in the target user's Preferences directory
+      	  touch /Users/$USER/Library/Preferences/com.apple.loginwindow.plist
+
+      4. Populate the plist with the location of your shell script
+      	  defaults write com.apple.loginwindow LoginHook /Library/Scripts/AtomicRedTeam.sh

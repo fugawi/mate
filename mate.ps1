@@ -11,7 +11,8 @@ License: https://opensource.org/licenses/BSD-3-Clause
 Required Dependencies: powershell-yaml , Install-Module powershell-yaml #https://github.com/cloudbase/powershell-yaml
 Optional Dependencies: Atomic Red Team yaml files
 
-Version: 1.1 - Release Date 12/13/2018 (see Wiki for updates)
+Version: 1.1 - Release Date 12/12/2018 (see Wiki for updates)
+Version: 2.0 - Release Date 02/21/2019 (see Wiki for updates)
 
 .DESCRIPTION
 Create Atomic Tests from yaml files described in Atomic Red Team.
@@ -173,6 +174,17 @@ function Invoke-Atests($values) {
 					if (-Not ([string]::IsNullOrEmpty($atest))) {
 						Write-Host "Invoking Test --> " $atest -Foreground Green
 						$command,$argument = $atest.split(" ",2)
+						#Search for #{(any char(except linefeed),match 0 or more, lazy, grouped together)} string to determine if user input is required
+						$matches = ($argument | Select-String '#{(.*?)}' -AllMatches | %{$_.Matches.Value})
+						#if user input is required, prompt for required input
+						foreach ($match in $matches) {
+							$cleanstr = $match.trimstart("#{")
+							$clean = $cleanstr.trimend("}")
+							Write-Host "Please provide input for the $clean attribute to continue " -Foreground Cyan
+							$value = Read-Host
+							$argument = $argument -replace $match, $value  
+							Write-Host $argument
+						}	
 						$ProcessDate = Get-Date -Format g
 						if (-Not (Test-Path "$OutputFP\commandline.txt")) {
 							$NewFile = New-Item -Path "$OutputFP" -Name "commandline.txt" -ItemType "File" -Force
@@ -193,14 +205,24 @@ function Invoke-Atests($values) {
 				foreach ($atest in $AtomicTests.$technum.atomic_tests.executor_pwr.command -split "\n") {
 					if (-Not ([string]::IsNullOrEmpty($atest))) {
 					    Write-Host "Invoking Test --> " $atest -Foreground Green
-						$command,$argument = $atest.split(" ",2)
+						#Search for #{(any char(except linefeed),match 0 or more, lazy, grouped together)} string to determine if user input is required
+						$matches = ($atest | Select-String '#{(.*?)}' -AllMatches | %{$_.Matches.Value})
+						#if user input is required, prompt for required input
+						foreach ($match in $matches) {
+							$cleanstr = $match.trimstart("#{")
+							$clean = $cleanstr.trimend("}")
+							Write-Host "Please provide input for the $clean attribute to continue " -Foreground Cyan
+							$value = Read-Host
+							$atest = $atest -replace $match, $value
+						}
 						$ProcessDate = Get-Date -Format g
 						if (-Not (Test-Path "$OutputFP\powershell.txt")) {
 						    $NewFile = New-Item -Path "$OutputFP" -Name "powershell.txt" -ItemType "File" -Force
 						}
 						Write-Output "Date --> $ProcessDate" | Out-File -Append "$OutputFP\powershell.txt" 
-						Write-Output "Command --> $command $argument" | Out-File -Append "$OutputFP\powershell.txt"
-						$ProcessOutput = start-process powershell.exe -ArgumentList $atest -PassThru -WindowStyle Hidden -Wait
+						Write-Output "Command --> $atest" | Out-File -Append "$OutputFP\powershell.txt"
+						$atest = """$atest"""
+						$ProcessOutput = start-process powershell.exe -ArgumentList $atest -PassThru -WindowStyle Normal -Wait
 						$ProcID = $ProcessOutput.iD
 						Write-Output "PID --> $ProcID" | Out-File -Append "$OutputFP\powershell.txt"
 						Write-Host "`nInformation captured --> $OutputFP\powershell.txt" -ForegroundColor Green
@@ -226,7 +248,7 @@ Write-Host '
   /_/  /_/   /_/  |_|/_/     /_____/   
 ' -ForegroundColor Yellow
 Write-Host "##########################################################################################################" -ForegroundColor Green
-Write-Host "##   MITRE ATT&CK"([char]8482)"Technique Emulation (MATE) - v1.1		                                   	##" -ForegroundColor Green
+Write-Host "##   MITRE ATT&CK"([char]8482)"Technique Emulation (MATE) - v2.0		                                   	##" -ForegroundColor Green
 Write-Host "##   Developed By @Fugawi72                                                                             ##" -ForegroundColor Green
 Write-Host "##                                                                                                      ##" -ForegroundColor Green
 Write-Host "##   Thanks to Casey Smith (@subTee) for his initial work on 'Invoke-Atomic' which led to the creation  ##" -ForegroundColor Green

@@ -1,0 +1,26 @@
+---
+attack_technique: T1115
+display_name: Clipboard Data
+tactic: Collection
+description: Adversaries may collect data stored in the Windows clipboard from users copying information within or between applications.
+
+atomic_tests:
+- name: Utilize Clipboard to store or execute commands
+  description: |
+    Add data to clipboard to copy off or execute commands from.
+    Utilize PowerShell to echo a command to clipboard and execute it
+    
+  supported_platforms:
+    - windows
+
+  executor_man:
+    name: command_prompt
+    command: |
+      dir | clip
+      clip < readme.txt
+
+  executor_pwr:
+    name: powershell
+    command: |
+      echo Get-Process | clip
+      Get-Clipboard | iex
